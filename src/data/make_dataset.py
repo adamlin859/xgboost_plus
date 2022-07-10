@@ -4,7 +4,8 @@ import io
 import scipy.io as matio
 import numpy as np
 import re
-
+import torch.utils.data
+from PIL import Image
 
 INGREDIENT_PATH = "data/raw/food101/metadata/ingredients.txt"
 INTERMIN_PATH = "data/interim/"
@@ -13,6 +14,8 @@ def loadMat(root_path, fileName):
     file = matio.loadmat(root_path + fileName)[fileName[:-4]]
     return file
 
+def default_loader(image_path):
+    return Image.open(image_path).convert('RGB')
 
 def preprocess(opt):
     root_path = opt.data_path
@@ -156,7 +159,7 @@ def create_glove_matrix(wordList, opt):
     wordVector = np.zeros((num_word,300))
     count = 0
     for word in wordList:
-        print(p)
+
         q = 0
         for glove_word in glove_head:
             if re.match(word, glove_word):
@@ -167,8 +170,82 @@ def create_glove_matrix(wordList, opt):
             q+=1
         p+=1
 
-    print(count)
     matio.savemat(opt.data_path + INTERMIN_PATH + 'wordVector_word.mat', {'wordVector_word': wordVector})
 
     return wordVector
+
+class dataset_stage1(torch.utils.data.Dataset):
+    def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
+
+        # load image paths
+
+        img_path_file = meta_path + 'train_images.txt'
+
+        with io.open(img_path_file, encoding='utf-8') as file:
+            path_to_images = file.read().split('\n')[:-1]
+
+
+
+        self.image_path = image_path
+        self.path_to_images = path_to_images
+        self.transform = transform
+        self.loader = loader
+        #import ipdb; ipdb.set_trace()
+
+    def __getitem__(self, index):
+        # get image matrix and transform to tensor
+        path = self.path_to_images[index]
+        img = self.loader(self.image_path + path + '.jpg')
+
+        if self.transform is not None:
+            img = self.transform(img)
+        return img
+
+    def __len__(self):
+        return len(self.path_to_images)
+
+
+class dataset_simple_cnn(torch.utils.data.Dataset):
+    def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
+
+        # load image paths
+
+        img_path_file = meta_path + 'train_images.txt'
+        label_path_file = meta_path + 'train_labels.txt'
+
+        # load the image names 
+        label_mapping = meta_path + 'labels.txt'
+
+        with io.open(img_path_file, encoding='utf-8') as file:
+            path_to_images = file.read().split('\n')[:-1]
+        with io.open(label_path_file, encoding='utf-8') as file:
+            labels = file.read().split('\n')[:-1]
+        with io.open(label_mapping, encoding='utf-8') as file:
+            label_map = file.read().split('\n')[:-1]
+
+        self.image_path = image_path
+        self.path_to_images = path_to_images
+        self.transform = transform
+        self.loader = loader
+        self.labels = np.array(labels, dtype=int)
+        self.label_map = label_map
+
+        #import ipdb; ipdb.set_trace()
+
+    def __getitem__(self, index):
+        # get image matrix and transform to tensor
+        path = self.path_to_images[index]
+        img = self.loader(self.image_path + path + '.jpg')
+
+        label = np.zeros(len(self.label_map))
+        label[self.labels[index]] = 1
+
+        if self.transform is not None:
+            img = self.transform(img)
+        return [img, label]
+
+    def __len__(self):
+        return len(self.path_to_images)
+
+
 
