@@ -205,6 +205,135 @@ class dataset_stage1(torch.utils.data.Dataset):
         return len(self.path_to_images)
 
 
+# class dataset_simple_cnn(torch.utils.data.Dataset):
+#     def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
+
+#         # load image paths
+
+#         img_path_file = meta_path + 'train_images.txt'
+#         label_path_file = meta_path + 'train_labels.txt'
+
+#         # load the image names 
+#         label_mapping = meta_path + 'labels.txt'
+
+#         with io.open(img_path_file, encoding='utf-8') as file:
+#             path_to_images = file.read().split('\n')[:-1]
+#         with io.open(label_path_file, encoding='utf-8') as file:
+#             labels = file.read().split('\n')[:-1]
+#         with io.open(label_mapping, encoding='utf-8') as file:
+#             label_map = file.read().split('\n')[:-1]
+
+#         self.image_path = image_path
+#         self.path_to_images = path_to_images
+#         self.transform = transform
+#         self.loader = loader
+#         self.labels = np.array(labels, dtype=int)
+#         self.label_map = label_map
+
+#         #import ipdb; ipdb.set_trace()
+
+#     def __getitem__(self, index):
+#         # get image matrix and transform to tensor
+#         path = self.path_to_images[index]
+#         img = self.loader(self.image_path + path + '.jpg')
+
+#         label = np.zeros(len(self.label_map))
+#         label[self.labels[index]] = 1
+
+#         if self.transform is not None:
+#             img = self.transform(img)
+#         return [img, label]
+
+#     def __len__(self):
+#         return len(self.path_to_images)
+
+
+# class dataset_simple_cnn_val(torch.utils.data.Dataset):
+#     def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
+
+#         # load image paths
+
+#         img_path_file = meta_path + 'val_images.txt'
+#         label_path_file = meta_path + 'val_labels.txt'
+
+#         # load the image names 
+#         label_mapping = meta_path + 'labels.txt'
+
+#         with io.open(img_path_file, encoding='utf-8') as file:
+#             path_to_images = file.read().split('\n')[:-1]
+#         with io.open(label_path_file, encoding='utf-8') as file:
+#             labels = file.read().split('\n')[:-1]
+#         with io.open(label_mapping, encoding='utf-8') as file:
+#             label_map = file.read().split('\n')[:-1]
+
+#         self.image_path = image_path
+#         self.path_to_images = path_to_images
+#         self.transform = transform
+#         self.loader = loader
+#         self.labels = np.array(labels, dtype=int)
+#         self.label_map = label_map
+
+#         #import ipdb; ipdb.set_trace()
+
+#     def __getitem__(self, index):
+#         # get image matrix and transform to tensor
+#         path = self.path_to_images[index]
+#         img = self.loader(self.image_path + path + '.jpg')
+
+#         label = np.zeros(len(self.label_map))
+#         label[self.labels[index]] = 1
+
+#         if self.transform is not None:
+#             img = self.transform(img)
+#         return [img, label]
+
+#     def __len__(self):
+#         return len(self.path_to_images)
+
+
+
+class dataset_simple_cnn_val(torch.utils.data.Dataset):
+    def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
+
+        # load image paths
+
+        img_path_file = meta_path + 'val_images.txt'
+        label_path_file = meta_path + 'val_labels.txt'
+
+        # load the image names 
+        label_mapping = meta_path + 'labels.txt'
+
+        with io.open(img_path_file, encoding='utf-8') as file:
+            path_to_images = file.read().split('\n')[:-1]
+        with io.open(label_path_file, encoding='utf-8') as file:
+            labels = file.read().split('\n')[:-1]
+        with io.open(label_mapping, encoding='utf-8') as file:
+            label_map = file.read().split('\n')[:-1]
+
+        self.image_path = image_path
+        self.path_to_images = path_to_images
+        self.transform = transform
+        self.loader = loader
+        self.labels = np.array(labels, dtype=int)
+        self.label_map = label_map
+
+        #import ipdb; ipdb.set_trace()
+
+    def __getitem__(self, index):
+        # get image matrix and transform to tensor
+        path = self.path_to_images[index]
+        img = self.loader(self.image_path + path + '.jpg')
+
+        label = self.labels[index]
+
+        if self.transform is not None:
+            img = self.transform(img)
+        return [img, label]
+
+    def __len__(self):
+        return len(self.path_to_images)
+
+
 class dataset_simple_cnn(torch.utils.data.Dataset):
     def __init__(self, image_path = None, meta_path = None, transform=None, loader=default_loader):
 
@@ -237,8 +366,7 @@ class dataset_simple_cnn(torch.utils.data.Dataset):
         path = self.path_to_images[index]
         img = self.loader(self.image_path + path + '.jpg')
 
-        label = np.zeros(len(self.label_map))
-        label[self.labels[index]] = 1
+        label = self.labels[index]
 
         if self.transform is not None:
             img = self.transform(img)
@@ -246,6 +374,3 @@ class dataset_simple_cnn(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.path_to_images)
-
-
-
