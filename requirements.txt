@@ -1,0 +1,21 @@
+clarabel==0.6.0
+cvxpy==1.4.2
+ecos==2.0.13
+joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1691577114857/work
+mkl-fft @ file:///croot/mkl_fft_1695058164594/work
+mkl-random @ file:///croot/mkl_random_1695059800811/work
+mkl-service==2.4.0
+numpy @ file:///work/mkl/numpy_and_numpy_base_1682953417311/work
+osqp==0.6.5
+pandas==2.0.3
+pybind11==2.11.1
+python-dateutil==2.8.2
+pytz==2024.1
+qdldl==0.1.7.post0
+scikit-learn @ file:///croot/scikit-learn_1694788527225/work
+scipy==1.10.1
+scs==3.2.4.post1
+six==1.16.0
+threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1707930541534/work
+tzdata==2024.1
+xgboost==1.7.3
