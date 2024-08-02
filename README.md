@@ -14,12 +14,12 @@ Options for {experiments}:
 - experiment2
 - experiment3
 
-# Experiment 1: Synthetic dataset experiment where |J| = 3 and |H| = 2. This experiment produces Table 1 in our paper.
+### Experiment 1: Synthetic dataset experiment where |J| = 3 and |H| = 2. This experiment produces Table 1 in our paper.
 
-# Experiment 2: Synthetic dataset experiment where the we varied the values of |H| and |J|. This experiment produces Appendix Table 1 in our paper. 
-                This experiment take longer than other experiments.
+### Experiment 2: Synthetic dataset experiment where the we varied the values of |H| and |J|. This experiment produces Appendix Table 1 in our paper. 
+This experiment take longer than other experiments.
 
-# Experiment 3: PBC dataset experiment where the we varied the values of |H| and |J|. This experiment produces Appendix Table 1 in our paper.
+### Experiment 3: PBC dataset experiment where the we varied the values of |H| and |J|. This experiment produces Appendix Table 1 in our paper.
 
 
 The command will run the specified model using the specified dataset over 100 independent trials and produce the
